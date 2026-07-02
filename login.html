@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — SideChat AI</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #0a0f1e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        font-family: sans-serif;
+      }
+      .card {
+        background: #1a2235;
+        border: 1px solid #1e2d45;
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 420px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 28px;
+        text-decoration: none;
+      }
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #6366f1, #06b6d4);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .logo-text {
+        font-size: 18px;
+        font-weight: 700;
+        color: #f1f5f9;
+      }
+      h2 {
+        text-align: center;
+        color: #f1f5f9;
+        font-size: 24px;
+        margin-bottom: 6px;
+      }
+      .sub {
+        text-align: center;
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 28px;
+      }
+      label {
+        display: block;
+        color: #f1f5f9;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      input {
+        width: 100%;
+        background: #111827;
+        border: 1px solid #1e2d45;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 14px;
+        color: #f1f5f9;
+        outline: none;
+        margin-bottom: 16px;
+        font-family: sans-serif;
+      }
+      input:focus {
+        border-color: #6366f1;
+      }
+      input::placeholder {
+        color: #64748b;
+      }
+      .btn {
+        display: block;
+        width: 100%;
+        background: #6366f1;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        margin-top: 4px;
+      }
+      .btn:hover {
+        background: #5254cc;
+      }
+      .switch {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #64748b;
+      }
+      .switch a {
+        color: #818cf8;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <a class="logo" href="index.html">
+        <div class="logo-icon">💬</div>
+        <span class="logo-text">SideChat AI</span>
+      </a>
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to your dashboard</p>
+      <label>Email</label>
+      <input type="email" placeholder="you@business.com" />
+      <label>Password</label>
+      <input type="password" placeholder="••••••••" />
+      <a class="btn" href="dashboard.html">Sign in →</a>
+      <div class="switch">
+        Don't have an account? <a href="register.html">Create one</a>
+      </div>
+    </div>
+  </body>
+</html>
