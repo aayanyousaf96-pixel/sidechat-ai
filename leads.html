@@ -1,29 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Leads — SideChat AI</title>
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  <body
-    style="
-      background: var(--bg);
-      color: var(--text);
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      flex-direction: column;
-      gap: 16px;
-    "
-  >
-    <div style="font-size: 48px">👥</div>
-    <h1>Leads</h1>
-    <p style="color: var(--muted)">Coming soon</p>
-    <a href="dashboard.html" style="color: var(--primary)"
-      >← Back to Dashboard</a
-    >
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leads — SideChat AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0A0F1E; color: #F1F5F9; min-height: 100vh; display: flex; }
+    .sidebar { width: 240px; background: #111827; border-right: 1px solid #1E2D45; display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; left: 0; z-index: 50; }
+    .sidebar-logo { padding: 20px; border-bottom: 1px solid #1E2D45; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; text-decoration: none; color: #F1F5F9; }
+    .logo-icon { width: 30px; height: 30px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; }
+    .nav-section { font-size: 10px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 12px 6px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 500; color: #64748B; text-decoration: none; transition: all 0.2s; }
+    .nav-item:hover { background: #1A2235; color: #F1F5F9; }
+    .nav-item.active { background: rgba(99,102,241,0.15); color: #818CF8; }
+    .sidebar-bottom { padding: 16px 12px; border-top: 1px solid #1E2D45; }
+    .user-pill { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; text-decoration: none; color: #F1F5F9; }
+    .user-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+    .main { flex: 1; margin-left: 240px; display: flex; flex-direction: column; }
+    .topbar { padding: 16px 32px; border-bottom: 1px solid #1E2D45; display: flex; align-items: center; justify-content: space-between; background: #111827; position: sticky; top: 0; z-index: 40; }
+    .page-title { font-size: 18px; font-weight: 700; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; font-family: inherit; }
+    .btn-primary { background: #6366F1; color: white; }
+    .btn-secondary { background: #1A2235; color: #F1F5F9; border: 1px solid #1E2D45; }
+    .btn-success { background: rgba(16,185,129,0.1); color: #10B981; border: 1px solid rgba(16,185,129,0.2); }
+    .page { padding: 32px; }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-header p { color: #64748B; font-size: 14px; margin-bottom: 28px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 16px; padding: 24px; }
+    .stat-label { font-size: 13px; color: #64748B; margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 800; }
+    .leads-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .lead-card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 14px; padding: 20px; }
+    .lead-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .lead-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #6366F1, #06B6D4); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: white; flex-shrink: 0; }
+    .lead-name { font-size: 14px; font-weight: 600; }
+    .lead-topic { font-size: 12px; color: #64748B; }
+    .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; margin-left: auto; }
+    .badge-blue { background: rgba(99,102,241,0.1); color: #818CF8; }
+    .badge-yellow { background: rgba(245,158,11,0.1); color: #F59E0B; }
+    .badge-green { background: rgba(16,185,129,0.1); color: #10B981; }
+    .lead-contact { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .lead-contact-item { font-size: 12px; color: #64748B; }
+    .lead-actions { display: flex; gap: 8px; }
+    .hamburger { display: none; background: none; border: none; color: #F1F5F9; font-size: 22px; cursor: pointer; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 49; }
+    .overlay.show { display: block; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger { display: block; }
+      .page { padding: 16px; }
+      .topbar { padding: 14px 16px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .leads-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-logo" href="index.html">
+      <div class="logo-icon">💬</div>
+      SideChat AI
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Workspace</div>
+      <a class="nav-item" href="dashboard.html">🏠 Overview</a>
+      <a class="nav-item" href="knowledge.html">🧠 Knowledge Base</a>
+      <a class="nav-item" href="conversations.html">💬 Conversations</a>
+      <a class="nav-item active" href="leads.html">👥 Leads</a>
+      <a class="nav-item" href="analytics.html">📊 Analytics</a>
+      <a class="nav-item" href="widget.html">⚙️ Widget Settings</a>
+      <a class="nav-item" href="embed.html">🔗 Embed Code</a>
+      <div class="nav-section">Admin</div>
+      <a class="nav-item" href="admin.html">⭐ Admin Panel</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a class="user-pill" href="index.html">
+        <div class="user-avatar">H</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;">Harry Yousaf</div>
+          <div style="font-size:11px;color:#64748B;">Professional Plan</div>
+        </div>
+      </a>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <div class="page-title">Leads</div>
+      </div>
+      <a class="btn btn-primary" href="#">Export Leads</a>
+    </header>
+    <div class="page">
+      <div class="page-header">
+        <h1>Lead Management</h1>
+        <p>Customers who shared their contact details</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Total Leads</div><div class="stat-value">94</div></div>
+        <div class="stat-card"><div class="stat-label">New This Week</div><div class="stat-value">23</div></div>
+        <div class="stat-card"><div class="stat-label">Awaiting Follow-up</div><div class="stat-value">11</div></div>
+      </div>
+      <div class="leads-grid">
+        <div class="lead-card">
+          <div class="lead-header">
+            <div class="lead-avatar">SJ</div>
+            <div><div class="lead-name">Sarah Johnson</div><div class="lead-topic">Product inquiry · 2h ago</div></div>
+            <span class="badge badge-blue">New</span>
+          </div>
+          <div class="lead-contact">
+            <div class="lead-contact-item">📧 sarah@email.com</div>
+            <div class="lead-contact-item">📞 +1 555 0182</div>
+          </div>
+          <div class="lead-actions">
+            <a class="btn btn-success" href="#" style="flex:1;justify-content:center;">WhatsApp</a>
+            <a class="btn btn-secondary" href="#" style="flex:1;justify-content:center;">Email</a>
+          </div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-header">
+            <div class="lead-avatar">AM</div>
+            <div><div class="lead-name">Ahmed Malik</div><div class="lead-topic">Pricing question · 5h ago</div></div>
+            <span class="badge badge-yellow">Contacted</span>
+          </div>
+          <div class="lead-contact">
+            <div class="lead-contact-item">📧 ahmed@business.pk</div>
+            <div class="lead-contact-item">📞 +92 300 1234567</div>
+          </div>
+          <div class="lead-actions">
+            <a class="btn btn-success" href="#" style="flex:1;justify-content:center;">WhatsApp</a>
+            <a class="btn btn-secondary" href="#" style="flex:1;justify-content:center;">Email</a>
+          </div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-header">
+            <div class="lead-avatar">MG</div>
+            <div><div class="lead-name">Maria Garcia</div><div class="lead-topic">Support request · 1d ago</div></div>
+            <span class="badge badge-green">Resolved</span>
+          </div>
+          <div class="lead-contact">
+            <div class="lead-contact-item">📧 maria@store.com</div>
+            <div class="lead-contact-item">📞 +1 555 0931</div>
+          </div>
+          <div class="lead-actions">
+            <a class="btn btn-success" href="#" style="flex:1;justify-content:center;">WhatsApp</a>
+            <a class="btn btn-secondary" href="#" style="flex:1;justify-content:center;">Email</a>
+          </div>
+        </div>
+        <div class="lead-card">
+          <div class="lead-header">
+            <div class="lead-avatar">DC</div>
+            <div><div class="lead-name">David Chen</div><div class="lead-topic">Enterprise plan · 1d ago</div></div>
+            <span class="badge badge-blue">New</span>
+          </div>
+          <div class="lead-contact">
+            <div class="lead-contact-item">📧 david@tech.io</div>
+            <div class="lead-contact-item">📞 +1 555 0445</div>
+          </div>
+          <div class="lead-actions">
+            <a class="btn btn-success" href="#" style="flex:1;justify-content:center;">WhatsApp</a>
+            <a class="btn btn-secondary" href="#" style="flex:1;justify-content:center;">Email</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('overlay').classList.add('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    }
+  </script>
+</body>
 </html>
