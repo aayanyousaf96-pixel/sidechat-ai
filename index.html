@@ -1,34 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SideChat AI — AI Customer Assistant for Every Website</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <!-- NAVBAR -->
-    <nav class="navbar">
-      <a class="logo" href="index.html">
-        <div class="logo-icon">💬</div>
-        SideChat AI
-      </a>
-      <div class="nav-links">
-        <a class="nav-link" href="#features">Features</a>
-        <a class="nav-link" href="#pricing">Pricing</a>
-        <a class="nav-link" href="#how">How it works</a>
-      </div>
-      <div class="nav-actions">
-        <a class="btn btn-secondary" href="login.html">Sign in</a>
-        <a class="btn btn-primary" href="register.html">Start free →</a>
-      </div>
-    </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SideChat AI — AI Customer Assistant for Every Website</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0A0F1E; color: #F1F5F9; min-height: 100vh; }
+    .navbar { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; border-bottom: 1px solid #1E2D45; position: sticky; top: 0; z-index: 100; background: rgba(10,15,30,0.85); backdrop-filter: blur(20px); }
+    .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; text-decoration: none; color: #F1F5F9; }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-link { color: #64748B; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover { color: #F1F5F9; }
+    .nav-actions { display: flex; gap: 12px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; font-family: inherit; }
+    .btn-primary { background: #6366F1; color: white; }
+    .btn-primary:hover { background: #5254cc; transform: translateY(-1px); }
+    .btn-secondary { background: #1A2235; color: #F1F5F9; border: 1px solid #1E2D45; }
+    .btn-secondary:hover { border-color: #6366F1; color: #818CF8; }
+    .btn-lg { padding: 14px 28px; font-size: 15px; border-radius: 12px; }
+    .hero { padding: 100px 60px 80px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%); pointer-events: none; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); color: #818CF8; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 28px; }
+    .hero h1 { font-size: 64px; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; max-width: 800px; margin: 0 auto 24px; }
+    .hero h1 span { background: linear-gradient(135deg, #818CF8, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 18px; color: #64748B; max-width: 560px; margin: 0 auto 40px; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; }
+    .features { padding: 100px 60px; }
+    .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: #818CF8; text-transform: uppercase; margin-bottom: 12px; text-align: center; }
+    .section-title { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; text-align: center; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 60px; }
+    .feature-card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 16px; padding: 28px; transition: all 0.3s; }
+    .feature-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-2px); }
+    .feature-icon { width: 44px; height: 44px; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 20px; }
+    .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: #64748B; line-height: 1.6; }
+    .pricing { padding: 100px 60px; background: rgba(0,0,0,0.3); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 60px; max-width: 960px; margin-left: auto; margin-right: auto; }
+    .pricing-card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 20px; padding: 32px; position: relative; }
+    .pricing-card.featured { border-color: #6366F1; background: linear-gradient(135deg, rgba(99,102,241,0.1), #1A2235); box-shadow: 0 0 40px rgba(99,102,241,0.15); }
+    .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #6366F1; color: white; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px; white-space: nowrap; }
+    .plan-name { font-size: 14px; font-weight: 600; color: #64748B; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .plan-price { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px; }
+    .plan-price span { font-size: 18px; font-weight: 400; color: #64748B; }
+    .plan-desc { font-size: 13px; color: #64748B; margin-bottom: 28px; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .plan-features li { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .plan-features li::before { content: '✓'; color: #10B981; font-weight: 700; }
+    .cta { padding: 100px 60px; text-align: center; }
+    footer { padding: 24px 60px; border-top: 1px solid #1E2D45; display: flex; justify-content: space-between; align-items: center; color: #64748B; font-size: 13px; }
+    @media (max-width: 768px) {
+      .navbar { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 60px 20px 50px; }
+      .hero h1 { font-size: 36px; }
+      .features { padding: 60px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing { padding: 60px 20px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .cta { padding: 60px 20px; }
+      footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="badge">⚡ AI-POWERED CUSTOMER SUPPORT</div>
-      <h1>Your AI assistant,<br /><span>live in 5 minutes</span></h1>
-      <p>Add a</p>
-    </section>
-  </body>
+  <nav class="navbar">
+    <a class="logo" href="index.html">
+      <div class="logo-icon">💬</div>
+      SideChat AI
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="#how">How it works</a>
+    </div>
+    <div class="nav-actions">
+      <a class="btn btn-secondary" href="login.html">Sign in</a>
+      <a class="btn btn-primary" href="register.html">Start free →</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">⚡ AI-POWERED CUSTOMER SUPPORT</div>
+    <h1>Your AI assistant,<br /><span>live in 5 minutes</span></h1>
+    <p>Add a trained AI customer assistant to any website. It answers questions, captures leads, and hands off to humans — all from your business knowledge.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary btn-lg" href="register.html">Get started free</a>
+      <a class="btn btn-secondary btn-lg" href="login.html">Sign in →</a>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-label">Everything you need</div>
+    <div class="section-title">Built for real businesses</div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">🧠</div><h3>Trains on your content</h3><p>Upload PDFs, docs, FAQs, websites. The AI learns your business and answers accurately.</p></div>
+      <div class="feature-card"><div class="feature-icon">👥</div><h3>Lead capture built in</h3><p>Collects names, emails, and phone numbers. Routes hot leads to your inbox or WhatsApp instantly.</p></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><h3>Analytics dashboard</h3><p>See what customers ask most, how the AI performs, and which conversations convert.</p></div>
+      <div class="feature-card"><div class="feature-icon">💻</div><h3>One-line embed</h3><p>Add a single script tag to your website. Works on any platform — Shopify, WordPress, custom code.</p></div>
+      <div class="feature-card"><div class="feature-icon">🌍</div><h3>Multilingual AI</h3><p>Responds in the customer's language automatically. Supports 50+ languages out of the box.</p></div>
+      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Enterprise security</h3><p>GDPR-compliant architecture, encrypted at rest and in transit. Your data stays yours.</p></div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="section-label">Simple pricing</div>
+    <div class="section-title">Start free, scale as you grow</div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">$29<span>/mo</span></div>
+        <div class="plan-desc">Perfect for small businesses</div>
+        <ul class="plan-features">
+          <li>1 website</li>
+          <li>500 conversations/mo</li>
+          <li>Basic AI assistant</li>
+          <li>Lead collection</li>
+          <li>Email support</li>
+        </ul>
+        <a class="btn btn-secondary" href="register.html" style="width:100%;justify-content:center;">Get started</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">MOST POPULAR</div>
+        <div class="plan-name">Professional</div>
+        <div class="plan-price">$79<span>/mo</span></div>
+        <div class="plan-desc">For growing businesses</div>
+        <ul class="plan-features">
+          <li>5 websites</li>
+          <li>Unlimited conversations</li>
+          <li>Advanced AI + analytics</li>
+          <li>Lead management</li>
+          <li>WhatsApp handoff</li>
+          <li>Priority support</li>
+        </ul>
+        <a class="btn btn-primary" href="register.html" style="width:100%;justify-content:center;">Get started</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">$199<span>/mo</span></div>
+        <div class="plan-desc">Full-scale deployment</div>
+        <ul class="plan-features">
+          <li>Unlimited websites</li>
+          <li>Custom AI training</li>
+          <li>White-label branding</li>
+          <li>API access</li>
+          <li>Team members</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a class="btn btn-secondary" href="register.html" style="width:100%;justify-content:center;">Get started</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2 style="font-size:42px;font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;">Ready to transform your<br/>customer support?</h2>
+    <p style="color:#64748B;font-size:16px;margin-bottom:36px;">Join 2,000+ businesses already using SideChat AI.</p>
+    <a class="btn btn-primary btn-lg" href="register.html">Start your free trial →</a>
+  </section>
+
+  <footer>
+    <div class="logo" style="font-size:15px;">
+      <div class="logo-icon" style="width:28px;height:28px;font-size:14px;">💬</div>
+      SideChat AI
+    </div>
+    <div>© 2025 SideChat AI. All rights reserved.</div>
+  </footer>
+
+</body>
 </html>
