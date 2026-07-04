@@ -1,27 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Embed Code — SideChat AI</title>
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  <body
-    style="
-      background: var(--bg);
-      color: var(--text);
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      flex-direction: column;
-      gap: 16px;
-    "
-  >
-    <div style="font-size: 48px">🔗</div>
-    <h1>Embed Code</h1>
-    <p style="color: var(--muted)">Coming soon</p>
-    <a href="dashboard.html" class="btn btn-primary">← Back to Dashboard</a>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Embed Code — SideChat AI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0A0F1E; color: #F1F5F9; font-family: sans-serif; display: flex; min-height: 100vh; }
+    .sidebar { width: 240px; background: #111827; border-right: 1px solid #1E2D45; display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; }
+    .sidebar-logo { padding: 20px; border-bottom: 1px solid #1E2D45; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; text-decoration: none; color: #F1F5F9; }
+    .logo-icon { width: 30px; height: 30px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .nav-section { font-size: 10px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 12px 6px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 500; color: #64748B; text-decoration: none; margin: 1px 12px; transition: all 0.2s; }
+    .nav-item:hover { background: #1A2235; color: #F1F5F9; }
+    .nav-item.active { background: rgba(99,102,241,0.15); color: #818CF8; }
+    .sidebar-bottom { padding: 16px 12px; border-top: 1px solid #1E2D45; margin-top: auto; }
+    .user-pill { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; text-decoration: none; color: #F1F5F9; }
+    .user-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; }
+    .main { flex: 1; margin-left: 240px; }
+    .topbar { padding: 16px 32px; border-bottom: 1px solid #1E2D45; background: #111827; display: flex; align-items: center; }
+    .page { padding: 32px; }
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .page-header p { color: #64748B; font-size: 14px; }
+    .card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+    .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .card p { font-size: 13px; color: #64748B; margin-bottom: 16px; }
+    .embed-box { background: #0A0F1E; border: 1px solid #1E2D45; border-radius: 12px; padding: 20px; font-family: monospace; font-size: 13px; color: #a5b4fc; position: relative; line-height: 1.8; }
+    .copy-btn { position: absolute; top: 12px; right: 12px; background: #1A2235; border: 1px solid #1E2D45; color: #F1F5F9; padding: 6px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: sans-serif; }
+    .copy-btn:hover { background: #6366F1; border-color: #6366F1; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature-card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 14px; padding: 20px; }
+    .feature-icon { font-size: 28px; margin-bottom: 10px; }
+    .feature-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .feature-card p { font-size: 12px; color: #64748B; line-height: 1.6; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .grid-3 { grid-template-columns: 1fr; } .page { padding: 16px; } }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="index.html">
+      <div class="logo-icon">💬</div>
+      SideChat AI
+    </a>
+    <nav style="padding: 16px 0;">
+      <div class="nav-section">Workspace</div>
+      <a class="nav-item" href="dashboard.html">🏠 Overview</a>
+      <a class="nav-item" href="knowledge.html">🧠 Knowledge Base</a>
+      <a class="nav-item" href="conversations.html">💬 Conversations</a>
+      <a class="nav-item" href="leads.html">👥 Leads</a>
+      <a class="nav-item" href="analytics.html">📊 Analytics</a>
+      <a class="nav-item" href="widget.html">⚙️ Widget Settings</a>
+      <a class="nav-item active" href="embed.html">🔗 Embed Code</a>
+      <div class="nav-section">Admin</div>
+      <a class="nav-item" href="admin.html">⭐ Admin Panel</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-pill">
+        <div class="user-avatar">H</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;">Honey Ahmed</div>
+          <div style="font-size:11px;color:#64748B;">Professional Plan</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div style="font-size:18px;font-weight:700;">Embed Code</div>
+    </div>
+    <div class="page">
+      <div class="page-header">
+        <h1>Embed Code</h1>
+        <p>Add SideChat AI to any website in seconds</p>
+      </div>
+
+      <div class="card">
+        <h3>Your embed snippet</h3>
+        <p>Paste this code before the closing &lt;/body&gt; tag on your website.</p>
+        <div class="embed-box">
+          <button class="copy-btn" onclick="copyCode()">📋 Copy</button>
+          <pre id="embedCode">&lt;!-- SideChat AI Widget --&gt;
+&lt;script&gt;
+  window.SideChatConfig = {
+    businessId: "biz_x9k2m4p8",
+    color: "#6366F1",
+    position: "bottom-right"
+  };
+&lt;/script&gt;
+&lt;script src="https://sidechat-ai.vercel.app/widget.js" async&gt;&lt;/script&gt;</pre>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h4>Any website</h4>
+          <p>Works with WordPress, Shopify, Wix, custom HTML, or any framework.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h4>Instant activation</h4>
+          <p>Your AI goes live the moment the script loads. No build step needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h4>Auto updates</h4>
+          <p>Your widget always runs the latest version. No reinstalls needed.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function copyCode() {
+      const code = document.getElementById('embedCode').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        document.querySelector('.copy-btn').textContent = '✅ Copied!';
+        setTimeout(() => document.querySelector('.copy-btn').textContent = '📋 Copy', 2000);
+      });
+    }
+  </script>
+</body>
 </html>
