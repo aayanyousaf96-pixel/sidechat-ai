@@ -1,195 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Widget Settings — SideChat AI</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0A0F1E; color: #F1F5F9; font-family: sans-serif; display: flex; min-height: 100vh; }
-    .sidebar { width: 240px; background: #111827; border-right: 1px solid #1E2D45; display: flex; flex-direction: column; position: fixed; top: 0; bottom: 0; }
-    .sidebar-logo { padding: 20px; border-bottom: 1px solid #1E2D45; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; text-decoration: none; color: #F1F5F9; }
-    .logo-icon { width: 30px; height: 30px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-    .nav-section { font-size: 10px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 12px 6px; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 500; color: #64748B; text-decoration: none; margin: 1px 12px; transition: all 0.2s; }
-    .nav-item:hover { background: #1A2235; color: #F1F5F9; }
-    .nav-item.active { background: rgba(99,102,241,0.15); color: #818CF8; }
-    .sidebar-bottom { padding: 16px 12px; border-top: 1px solid #1E2D45; margin-top: auto; }
-    .user-pill { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; text-decoration: none; color: #F1F5F9; }
-    .user-avatar { width: 32px; height: 32px; background: linear-gradient(135deg, #6366F1, #06B6D4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; }
-    .main { flex: 1; margin-left: 240px; }
-    .topbar { padding: 16px 32px; border-bottom: 1px solid #1E2D45; background: #111827; display: flex; align-items: center; justify-content: space-between; }
-    .page { padding: 32px; }
-    .page-header { margin-bottom: 28px; }
-    .page-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-    .page-header p { color: #64748B; font-size: 14px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .card { background: #1A2235; border: 1px solid #1E2D45; border-radius: 16px; padding: 24px; }
-    .card h3 { font-size: 15px; font-weight: 600; margin-bottom: 20px; }
-    .form-group { margin-bottom: 18px; }
-    label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #F1F5F9; }
-    input[type="text"], select { width: 100%; background: #111827; border: 1px solid #1E2D45; border-radius: 10px; padding: 11px 14px; font-size: 14px; color: #F1F5F9; font-family: sans-serif; outline: none; }
-    input[type="text"]:focus, select:focus { border-color: #6366F1; }
-    .color-row { display: flex; align-items: center; gap: 10px; }
-    input[type="color"] { width: 44px; height: 44px; border: 2px solid #1E2D45; border-radius: 10px; cursor: pointer; background: none; padding: 2px; }
-    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #1E2D45; }
-    .toggle-row:last-child { border-bottom: none; }
-    .toggle-info h4 { font-size: 13px; font-weight: 500; }
-    .toggle-info p { font-size: 12px; color: #64748B; margin-top: 2px; }
-    .toggle { width: 44px; height: 24px; background: #334155; border-radius: 100px; position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
-    .toggle.on { background: #6366F1; }
-    .toggle::after { content: ''; position: absolute; width: 18px; height: 18px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: 0.2s; }
-    .toggle.on::after { left: 23px; }
-    .preview-box { background: linear-gradient(135deg, #0d1117, #161b27); border-radius: 16px; padding: 30px; min-height: 320px; border: 1px solid #1E2D45; display: flex; align-items: flex-end; justify-content: flex-end; }
-    .widget-demo { width: 300px; }
-    .widget-window { background: #111827; border: 1px solid #1E2D45; border-radius: 16px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-    .widget-header { padding: 16px; display: flex; align-items: center; gap: 10px; }
-    .widget-avatar { width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-    .widget-messages { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-    .msg-bot { background: #1A2235; border-radius: 12px 12px 12px 4px; padding: 10px 14px; font-size: 12px; max-width: 85%; line-height: 1.5; }
-    .msg-user { border-radius: 12px 12px 4px 12px; padding: 10px 14px; font-size: 12px; max-width: 85%; align-self: flex-end; color: white; }
-    .widget-input-row { padding: 12px 16px; border-top: 1px solid #1E2D45; display: flex; gap: 8px; }
-    .widget-input { flex: 1; background: #1A2235; border: 1px solid #1E2D45; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #F1F5F9; outline: none; }
-    .widget-send { border: none; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: white; cursor: pointer; }
-    .widget-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: auto; cursor: pointer; font-size: 22px; border: none; color: white; box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
-    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; font-family: sans-serif; text-decoration: none; }
-    .btn-primary { background: #6366F1; color: white; }
-    .btn-secondary { background: #1A2235; color: #F1F5F9; border: 1px solid #1E2D45; }
-    @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .grid-2 { grid-template-columns: 1fr; } .page { padding: 16px; } }
-  </style>
-</head>
-<body>
-  <aside class="sidebar">
-    <a class="sidebar-logo" href="index.html">
-      <div class="logo-icon">💬</div>
-      SideChat AI
-    </a>
-    <nav style="padding: 16px 0;">
-      <div class="nav-section">Workspace</div>
-      <a class="nav-item" href="dashboard.html">🏠 Overview</a>
-      <a class="nav-item" href="knowledge.html">🧠 Knowledge Base</a>
-      <a class="nav-item" href="conversations.html">💬 Conversations</a>
-      <a class="nav-item" href="leads.html">👥 Leads</a>
-      <a class="nav-item" href="analytics.html">📊 Analytics</a>
-      <a class="nav-item active" href="widget.html">⚙️ Widget Settings</a>
-      <a class="nav-item" href="embed.html">🔗 Embed Code</a>
-      <div class="nav-section">Admin</div>
-      <a class="nav-item" href="admin.html">⭐ Admin Panel</a>
-    </nav>
-    <div class="sidebar-bottom">
-      <div class="user-pill">
-        <div class="user-avatar">H</div>
-        <div>
-          <div style="font-size:13px;font-weight:600;">Honey Ahmed</div>
-          <div style="font-size:11px;color:#64748B;">Professional Plan</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Widget Settings — SideChat AI</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #0a0f1e;
+        color: #f1f5f9;
+        font-family: sans-serif;
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 240px;
+        background: #111827;
+        border-right: 1px solid #1e2d45;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+      }
+      .sidebar-logo {
+        padding: 20px;
+        border-bottom: 1px solid #1e2d45;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #f1f5f9;
+      }
+      .logo-icon {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #6366f1, #06b6d4);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+      .nav-section {
+        font-size: 10px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 16px 12px 6px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        text-decoration: none;
+        margin: 1px 12px;
+        transition: all 0.2s;
+      }
+      .nav-item:hover {
+        background: #1a2235;
+        color: #f1f5f9;
+      }
+      .nav-item.active {
+        background: rgba(99, 102, 241, 0.15);
+        color: #818cf8;
+      }
+      .sidebar-bottom {
+        padding: 16px 12px;
+        border-top: 1px solid #1e2d45;
+        margin-top: auto;
+      }
+      .user-pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #f1f5f9;
+      }
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, #6366f1, #06b6d4);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+      }
+      .main {
+        flex: 1;
+        margin-left: 240px;
+      }
+      .topbar {
+        padding: 16px 32px;
+        border-bottom: 1px solid #1e2d45;
+        background: #111827;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .page {
+        padding: 32px;
+      }
+      .page-header {
+        margin-bottom: 28px;
+      }
+      .page-header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .page-header p {
+        color: #64748b;
+        font-size: 14px;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      .card {
+        background: #1a2235;
+        border: 1px solid #1e2d45;
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .card h3 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: #f1f5f9;
+      }
+      input[type="text"],
+      select {
+        width: 100%;
+        background: #111827;
+        border: 1px solid #1e2d45;
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-size: 14px;
+        color: #f1f5f9;
+        font-family: sans-serif;
+        outline: none;
+      }
+      input[type="text"]:focus,
+      select:focus {
+        border-color: #6366f1;
+      }
+      .color-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      input[type="color"] {
+        width: 44px;
+        height: 44px;
+        border: 2px solid #1e2d45;
+        border-radius: 10px;
+        cursor: pointer;
+        background: none;
+        padding: 2px;
+      }
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        border-bottom: 1px solid #1e2d45;
+      }
+      .toggle-row:last-child {
+        border-bottom: none;
+      }
+      .toggle-info h4 {
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .toggle-info p {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+      .toggle {
+        width: 44px;
+        height: 24px;
+        background: #334155;
+        border-radius: 100px;
+        position: relative;
+        cursor: pointer;
+        transition: 0.2s;
+        flex-shrink: 0;
+      }
+      .toggle.on {
+        background: #6366f1;
+      }
+      .toggle::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: white;
+        border-radius: 50%;
+        top: 3px;
+        left: 3px;
+        transition: 0.2s;
+      }
+      .toggle.on::after {
+        left: 23px;
+      }
+      .preview-box {
+        background: linear-gradient(135deg, #0d1117, #161b27);
+        border-radius: 16px;
+        padding: 30px;
+        min-height: 320px;
+        border: 1px solid #1e2d45;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+      .widget-demo {
+        width: 300px;
+      }
+      .widget-window {
+        background: #111827;
+        border: 1px solid #1e2d45;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      }
+      .widget-header {
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .widget-avatar {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .widget-messages {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .msg-bot {
+        background: #1a2235;
+        border-radius: 12px 12px 12px 4px;
+        padding: 10px 14px;
+        font-size: 12px;
+        max-width: 85%;
+        line-height: 1.5;
+      }
+      .msg-user {
+        border-radius: 12px 12px 4px 12px;
+        padding: 10px 14px;
+        font-size: 12px;
+        max-width: 85%;
+        align-self: flex-end;
+        color: white;
+      }
+      .widget-input-row {
+        padding: 12px 16px;
+        border-top: 1px solid #1e2d45;
+        display: flex;
+        gap: 8px;
+      }
+      .widget-input {
+        flex: 1;
+        background: #1a2235;
+        border: 1px solid #1e2d45;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: #f1f5f9;
+        outline: none;
+      }
+      .widget-send {
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: white;
+        cursor: pointer;
+      }
+      .widget-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        cursor: pointer;
+        font-size: 22px;
+        border: none;
+        color: white;
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        font-family: sans-serif;
+        text-decoration: none;
+      }
+      .btn-primary {
+        background: #6366f1;
+        color: white;
+      }
+      .btn-secondary {
+        background: #1a2235;
+        color: #f1f5f9;
+        border: 1px solid #1e2d45;
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+        }
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .page {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="sidebar-logo" href="index.html">
+        <div
+          class="logo-icon"
+          style="
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: white;
+          "
+        >
+          SC
+        </div>
+        SideChat AI
+      </a>
+      <nav style="padding: 16px 0">
+        <div class="nav-section">Workspace</div>
+        <a class="nav-item" href="dashboard.html">🏠 Overview</a>
+        <a class="nav-item" href="knowledge.html">🧠 Knowledge Base</a>
+        <a class="nav-item" href="conversations.html">💬 Conversations</a>
+        <a class="nav-item" href="leads.html">👥 Leads</a>
+        <a class="nav-item" href="analytics.html">📊 Analytics</a>
+        <a class="nav-item active" href="widget.html">⚙️ Widget Settings</a>
+        <a class="nav-item" href="embed.html">🔗 Embed Code</a>
+        <div class="nav-section">Admin</div>
+        <a class="nav-item" href="admin.html">⭐ Admin Panel</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="user-pill">
+          <div class="user-avatar">H</div>
+          <div>
+            <div style="font-size: 13px; font-weight: 600">Honey Ahmed</div>
+            <div style="font-size: 11px; color: #64748b">Professional Plan</div>
+          </div>
         </div>
       </div>
-    </div>
-  </aside>
+    </aside>
 
-  <main class="main">
-    <div class="topbar">
-      <div style="font-size:18px;font-weight:700;">Widget Settings</div>
-      <button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
-    </div>
-    <div class="page">
-      <div class="page-header">
-        <h1>Widget Settings</h1>
-        <p>Customize how your chat widget looks and behaves</p>
+    <main class="main">
+      <div class="topbar">
+        <div style="font-size: 18px; font-weight: 700">Widget Settings</div>
+        <button class="btn btn-primary" onclick="saveSettings()">
+          Save Changes
+        </button>
       </div>
-      <div class="grid-2">
-        <div style="display:flex;flex-direction:column;gap:20px;">
-          <div class="card">
-            <h3>🎨 Appearance</h3>
-            <div class="form-group">
-              <label>Widget color</label>
-              <div class="color-row">
-                <input type="color" id="colorPicker" value="#6366F1" oninput="updateColor(this.value)" />
-                <input type="text" id="colorText" value="#6366F1" oninput="updateColor(this.value)" />
+      <div class="page">
+        <div class="page-header">
+          <h1>Widget Settings</h1>
+          <p>Customize how your chat widget looks and behaves</p>
+        </div>
+        <div class="grid-2">
+          <div style="display: flex; flex-direction: column; gap: 20px">
+            <div class="card">
+              <h3>🎨 Appearance</h3>
+              <div class="form-group">
+                <label>Widget color</label>
+                <div class="color-row">
+                  <input
+                    type="color"
+                    id="colorPicker"
+                    value="#6366F1"
+                    oninput="updateColor(this.value)"
+                  />
+                  <input
+                    type="text"
+                    id="colorText"
+                    value="#6366F1"
+                    oninput="updateColor(this.value)"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Assistant name</label>
+                <input
+                  type="text"
+                  id="assistantName"
+                  value="TechStore AI"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Welcome message</label>
+                <input
+                  type="text"
+                  id="welcomeMsg"
+                  value="Hi! 👋 How can I help you today?"
+                  oninput="updatePreview()"
+                />
+              </div>
+              <div class="form-group">
+                <label>Widget position</label>
+                <select>
+                  <option>Bottom Right</option>
+                  <option>Bottom Left</option>
+                </select>
               </div>
             </div>
-            <div class="form-group">
-              <label>Assistant name</label>
-              <input type="text" id="assistantName" value="TechStore AI" oninput="updatePreview()" />
-            </div>
-            <div class="form-group">
-              <label>Welcome message</label>
-              <input type="text" id="welcomeMsg" value="Hi! 👋 How can I help you today?" oninput="updatePreview()" />
-            </div>
-            <div class="form-group">
-              <label>Widget position</label>
-              <select>
-                <option>Bottom Right</option>
-                <option>Bottom Left</option>
-              </select>
+            <div class="card">
+              <h3>⚙️ Behavior</h3>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <h4>Lead capture</h4>
+                  <p>Collect visitor name, email and phone</p>
+                </div>
+                <div
+                  class="toggle on"
+                  onclick="this.classList.toggle('on')"
+                ></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <h4>WhatsApp handoff</h4>
+                  <p>Route complex queries to WhatsApp</p>
+                </div>
+                <div
+                  class="toggle on"
+                  onclick="this.classList.toggle('on')"
+                ></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <h4>Analytics tracking</h4>
+                  <p>Track and analyze all conversations</p>
+                </div>
+                <div
+                  class="toggle on"
+                  onclick="this.classList.toggle('on')"
+                ></div>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <h4>Auto dark mode</h4>
+                  <p>Match visitor's system theme</p>
+                </div>
+                <div class="toggle" onclick="this.classList.toggle('on')"></div>
+              </div>
             </div>
           </div>
-          <div class="card">
-            <h3>⚙️ Behavior</h3>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>Lead capture</h4><p>Collect visitor name, email and phone</p></div>
-              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>WhatsApp handoff</h4><p>Route complex queries to WhatsApp</p></div>
-              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>Analytics tracking</h4><p>Track and analyze all conversations</p></div>
-              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-            </div>
-            <div class="toggle-row">
-              <div class="toggle-info"><h4>Auto dark mode</h4><p>Match visitor's system theme</p></div>
-              <div class="toggle" onclick="this.classList.toggle('on')"></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:12px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Live Preview</p>
-          <div class="preview-box">
-            <div class="widget-demo">
-              <div class="widget-window">
-                <div class="widget-header" id="widgetHeader" style="background:#6366F1;">
-                  <div class="widget-avatar">🤖</div>
-                  <div>
-                    <div style="font-weight:600;font-size:14px;" id="previewName">TechStore AI</div>
-                    <div style="font-size:11px;opacity:0.8;">● Online</div>
+          <div>
+            <p
+              style="
+                font-size: 12px;
+                font-weight: 700;
+                color: #64748b;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 12px;
+              "
+            >
+              Live Preview
+            </p>
+            <div class="preview-box">
+              <div class="widget-demo">
+                <div class="widget-window">
+                  <div
+                    class="widget-header"
+                    id="widgetHeader"
+                    style="background: #6366f1"
+                  >
+                    <div class="widget-avatar">🤖</div>
+                    <div>
+                      <div
+                        style="font-weight: 600; font-size: 14px"
+                        id="previewName"
+                      >
+                        TechStore AI
+                      </div>
+                      <div style="font-size: 11px; opacity: 0.8">● Online</div>
+                    </div>
+                  </div>
+                  <div class="widget-messages">
+                    <div class="msg-bot" id="previewWelcome">
+                      Hi! 👋 How can I help you today?
+                    </div>
+                    <div
+                      class="msg-user"
+                      id="previewUserMsg"
+                      style="background: #6366f1"
+                    >
+                      What are your store hours?
+                    </div>
+                    <div class="msg-bot">We're open Mon–Sat 9AM to 6PM! 🕐</div>
+                  </div>
+                  <div class="widget-input-row">
+                    <input
+                      class="widget-input"
+                      placeholder="Type a message..."
+                    />
+                    <button
+                      class="widget-send"
+                      id="previewSend"
+                      style="background: #6366f1"
+                    >
+                      ➤
+                    </button>
                   </div>
                 </div>
-                <div class="widget-messages">
-                  <div class="msg-bot" id="previewWelcome">Hi! 👋 How can I help you today?</div>
-                  <div class="msg-user" id="previewUserMsg" style="background:#6366F1;">What are your store hours?</div>
-                  <div class="msg-bot">We're open Mon–Sat 9AM to 6PM! 🕐</div>
-                </div>
-                <div class="widget-input-row">
-                  <input class="widget-input" placeholder="Type a message..." />
-                  <button class="widget-send" id="previewSend" style="background:#6366F1;">➤</button>
-                </div>
+                <button
+                  class="widget-btn"
+                  id="previewBtn"
+                  style="background: #6366f1"
+                >
+                  💬
+                </button>
               </div>
-              <button class="widget-btn" id="previewBtn" style="background:#6366F1;">💬</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <script>
-    function updateColor(val) {
-      document.getElementById('colorPicker').value = val;
-      document.getElementById('colorText').value = val;
-      document.getElementById('widgetHeader').style.background = val;
-      document.getElementById('previewBtn').style.background = val;
-      document.getElementById('previewSend').style.background = val;
-      document.getElementById('previewUserMsg').style.background = val;
-    }
-    function updatePreview() {
-      document.getElementById('previewName').textContent = document.getElementById('assistantName').value;
-      document.getElementById('previewWelcome').textContent = document.getElementById('welcomeMsg').value;
-    }
-    function saveSettings() {
-      alert('Settings saved! ✅');
-    }
-  </script>
-</body>
+    <script>
+      function updateColor(val) {
+        document.getElementById("colorPicker").value = val;
+        document.getElementById("colorText").value = val;
+        document.getElementById("widgetHeader").style.background = val;
+        document.getElementById("previewBtn").style.background = val;
+        document.getElementById("previewSend").style.background = val;
+        document.getElementById("previewUserMsg").style.background = val;
+      }
+      function updatePreview() {
+        document.getElementById("previewName").textContent =
+          document.getElementById("assistantName").value;
+        document.getElementById("previewWelcome").textContent =
+          document.getElementById("welcomeMsg").value;
+      }
+      function saveSettings() {
+        alert("Settings saved! ✅");
+      }
+    </script>
+  </body>
 </html>
